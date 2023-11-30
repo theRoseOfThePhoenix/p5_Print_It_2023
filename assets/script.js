@@ -1,3 +1,4 @@
+// Définition des diapositives avec leurs images et taglines
 const slides = [
 	{
 		"image":"slide1.jpg",
@@ -17,61 +18,77 @@ const slides = [
 	}
 ]
 
+// Index de la diapositive actuelle
 let currentIndex = 0;
 
-
+// Sélection des éléments DOM
 const imageBanner = document.querySelector(".banner-img");
-imageBanner.src = "assets/images/slideshow/" + slides[currentIndex].image;
-
 const texte = document.querySelector(".banner-txt");
-texte.innerHTML = slides[currentIndex].tagLine;
-
-
-
 const arrowLeft = document.querySelector(".arrow_left");
-arrowLeft.addEventListener("click", function () {
-	currentIndex--;
-	//infini
-	if (currentIndex < 0) {
-		currentIndex = 3;
-	}
-	imageBanner.src = "assets/images/slideshow/" + slides[currentIndex].image;
-	texte.innerHTML = slides[currentIndex].tagLine;
-	updateSelectedDot();
-});
-
 const arrowRight = document.querySelector(".arrow_right");
-arrowRight.addEventListener("click", function () {
-	currentIndex++;
-	//infini
-	if (currentIndex > 3) {
-		currentIndex = 0;
-	}
-	imageBanner.src = "assets/images/slideshow/" + slides[currentIndex].image;
-	texte.innerHTML = slides[currentIndex].tagLine;
-	updateSelectedDot();
-});
-
-
-
 const dots = document.querySelector(".dots");
 
-const nombreElements = slides.length;
+// Initialisation de la première diapositive
+imageBanner.src = "assets/images/slideshow/" + slides[currentIndex].image;
+texte.innerHTML = slides[currentIndex].tagLine;
+
+// Gestion du clic sur la flèche gauche
+arrowLeft.addEventListener("click", function () {
+	currentIndex--;
+
+	// Gestion de l'infini
+	if (currentIndex < 0) {
+		currentIndex = slides.length - 1;
+	}
+
+	// Mise à jour de l'image et du texte
+	imageBanner.src = "assets/images/slideshow/" + slides[currentIndex].image;
+	texte.innerHTML = slides[currentIndex].tagLine;
+
+	// Mise à jour du point sélectionné
+	updateSelectedDot();
+});
+
+// Gestion du clic sur la flèche droite
+arrowRight.addEventListener("click", function () {
+	currentIndex++;
+
+	// Gestion de l'infini
+	if (currentIndex >= slides.length) {
+		currentIndex = 0;
+	}
+
+	// Mise à jour de l'image et du texte
+	imageBanner.src = "assets/images/slideshow/" + slides[currentIndex].image;
+	texte.innerHTML = slides[currentIndex].tagLine;
+
+	// Mise à jour du point sélectionné
+	updateSelectedDot();
+});
+
+// Affichage des points indicateurs
 for (let i = 0; i < slides.length; i++) {
 	const dot = document.createElement("div");
 	dot.classList.add("dot");
+
+	// Ajout de la classe 'dot_selected' si c'est la diapositive actuelle
 	if (i === currentIndex) {
 		dot.classList.add("dot_selected");
-	} else {
 	}
+
+	// Ajout du point à la liste des points
 	dots.appendChild(dot);
 }
 
-//deselection des points
+// Mise à jour du point sélectionné
 function updateSelectedDot() {
-    const dotElements = dots.querySelectorAll(".dot");
-    dotElements.forEach(dot => {
-        dot.classList.remove("dot_selected");
-    });
-    dotElements[currentIndex].classList.add("dot_selected");
+	const dotElements = dots.querySelectorAll(".dot");
+
+	// Suppression de la classe 'dot_selected' de tous les points
+	dotElements.forEach(dot => {
+		dot.classList.remove("dot_selected");
+	});
+
+	// Ajout de la classe 'dot_selected' au point correspondant à la diapositive actuelle
+	dotElements[currentIndex].classList.add("dot_selected");
 }
